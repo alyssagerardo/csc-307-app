@@ -54,6 +54,26 @@ const addUser = (user) => {
   return user;
 };
 
+const generateID = () => {
+ const alphabet_list = [
+   "a", "b", "c", "d", "e", "f", "g", "h", "i", "j", "k",
+   "l", "m", "n", "o", "p", "q", "r", "s", "t", "u", "v", 
+   "w", "x", "y", "z"
+];
+ let letters = ""; 
+ for (let i = 0; i < 3; i++) {
+   const randIdx = Math.floor(Math.random() * alphabet_list.length); 
+   letters += alphabet_list[randIdx]; 
+ }
+
+ let numbers = ""; 
+ for (let i = 0; i < 3; i++) {
+   const randDigit = Math.floor(Math.random() * 10); 
+   numbers += randDigit;
+ } 
+ return letters + numbers; 
+} 
+
 const findUserById = (id) => {
  return users["users_list"].find((user) => user["id"] === id);
 }; 
@@ -103,7 +123,7 @@ app.delete("/users/:id", (req, res) => {
   const id = req.params["id"]; 
   let result = deleteUserByID(id); 
   if (result == true) {
-    res.send(); 
+    res.status(204).send(); 
   } else {
     res.status(404).send("Unable to delete"); 
   } 
@@ -111,8 +131,9 @@ app.delete("/users/:id", (req, res) => {
 
 app.post("/users", (req, res) => {
   const userToAdd = req.body;
+  userToAdd.id = generateID(); 
   addUser(userToAdd);
-  res.send();
+  res.status(201).send();
 });
 
 app.listen(port, () => {

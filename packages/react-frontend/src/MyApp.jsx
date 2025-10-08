@@ -6,19 +6,41 @@ import Form from "./Form";
 function MyApp() {
  const [characters, setCharacters] = useState([]); 
 
-function removeOneCharacter(index) {
-    const updated = characters.filter((character, i) => {
-      return i !== index;
+function removeOneCharacter(id) {
+    const promise = fetch(`http://localhost:8000/users/${id}`, {
+    method: "DELETE"
+    });  
+   promise
+    .then ((response) => {
+    if (response.status === 204) { 
+      const updated = characters.filter(
+        (character) => character.id !== id
+      ); 
+       setCharacters(updated);
+    } else if (response.status === 404) {
+      console.error("User not found in the backend."); 
+    } 
+    })
+    .catch((error) => {
+      console.error(error); 
     });
-    setCharacters(updated);
 }
 
 function updateList(person) {
-  postUser(person) 
-	.then(() => setCharacters([...characters, person]))
+ postUser(person) 
+	.then(response => { 
+	  if (response.status == 201) {
+	    return response.json();
+	  } else {
+	    console.log("Failed to add user. Status:", response.status);
+   	  }
+        })
+        .then((newUser)  => {
+	 setCharacters([...characters, person]);
+        })
 	.catch((error) => {
  	  console.log(error);
-	})
+	});
 }
 
 function fetchUsers() {

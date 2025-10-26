@@ -36,7 +36,7 @@ function updateList(person) {
 	    setCharacters([...characters, newUser]);
           }
 	})
-	.catch((error) => console.log(error);
+	.catch((error) => console.log(error));
 	
 }
 
@@ -48,8 +48,8 @@ useEffect(() => {
     fetchUsers()
 	.then((res) => res.json())
 	.then((json) => setCharacters(json))
-	.catch((error) => { console.log(error));
-}, [] ); 
+	.catch((error) => { console.log(error); });
+}, []); 
 
 function postUser(person) {
     return fetch("http://localhost:8000/users", { 

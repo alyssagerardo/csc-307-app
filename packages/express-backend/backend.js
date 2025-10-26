@@ -1,6 +1,7 @@
 // backend.js
 import express from "express";
 import cors from "cors";
+import userService from "./user-services.js";
 
 const app = express();
 const port = 8000;
@@ -26,9 +27,12 @@ app.get("/users/:id", (req, res) => {
 app.delete("/users/:id", (req, res) => { 
   userService.deleteUserById(req.params.id)
 	.then(user => {
-         if (user) res.status(200).json({ message: "User deleted" });
-         else res.status(404).json({ error: "User not found" });
-    	})
+         if (user) {
+            res.status(204).send();
+        } else {
+            res.status(404).json({ error: "User not found" });
+    	}
+       })
     	.catch(err => res.status(500).json({ error: err.message }));
 }); 
 

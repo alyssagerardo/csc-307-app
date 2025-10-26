@@ -5,7 +5,7 @@ function TableHeader() {
   return ( 
     <thead> 
      <tr>
-      <th>_ID</th> 
+      <th>ID</th> 
       <th>Name</th> 
       <th>Job</th>
      </tr>
